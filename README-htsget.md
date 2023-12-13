@@ -23,16 +23,17 @@ select stable_id, submission_file_path from sda.files;
 You should see the four files with their stable id.
 
 ## htsget
-To build a docker image run
-```sh
-docker build -f deploy/Dockerfile -t <image-name> .
-```
-and update the `image:` tag with the `<image-name>` in the docker-compose.yaml file, found in the [GDI htsget repository](https://github.com/GenomicDataInfrastructure/starter-kit-htsget/tree/feature/rust-htsget) (make sure to be in the `feature/rust-htsget` branch)
-
-To start the htsget-rs server, run
+To start the htsget-rs server, run the docker compose of the [GDI htsget repository](https://github.com/GenomicDataInfrastructure/starter-kit-htsget/tree/feature/rust-htsget) containing a pre-build image of the htsget server:
 ```sh
 docker compose up
 ```
+
+### Build a new htsget image
+If you wish to build a new docker image using the [htsget repository](https://github.com/NBISweden/htsget-rs/tree/feature/htsget-download) running
+```sh
+docker build -f deploy/Dockerfile -t <image-name> .
+```
+and then update the `image:` tag with the `<image-name>` in the docker-compose.yaml file, found in the [GDI htsget repository](https://github.com/GenomicDataInfrastructure/starter-kit-htsget/tree/feature/rust-htsget) (make sure to be in the `feature/rust-htsget` branch)
 
 ### Get a file
 To get a file from the htsget through sda-donwload, you first need to get a token from the mock-auth service using
