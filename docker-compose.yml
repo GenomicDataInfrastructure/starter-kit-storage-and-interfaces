@@ -144,7 +144,8 @@ services:
     environment:
       - DB_PASSWORD=${download_DB_PASSWORD}
       - DB_USER=${download_DB_USER}
-    image: ghcr.io/neicnordic/sda-download:v1.9.16
+    # image: ghcr.io/neicnordic/sda-download:v1.9.16
+    image: harbor.nbis.se/gdi/sda-download:crypt4gh
     networks:
       - public
       - secure
