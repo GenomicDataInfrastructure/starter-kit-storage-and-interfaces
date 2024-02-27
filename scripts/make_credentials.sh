@@ -17,7 +17,7 @@ for n in download finalize inbox ingest mapper sync verify; do
     curl -s -u test:test -X PUT "http://rabbitmq:15672/api/users/$n" -H "content-type:application/json" -d "${body_data}"
     curl -s -u test:test -X PUT "http://rabbitmq:15672/api/permissions/sda/$n" -H "content-type:application/json" -d '{"configure":"","write":"sda","read":".*"}'
 
-    ## password and permissions for DB
+
     psql -U postgres -h postgres -d sda -c "ALTER ROLE $n LOGIN PASSWORD '$n';"
 done
 
@@ -50,10 +50,17 @@ socket_timeout = 30
 EOD
 
 ## create crypt4gh key
+#if [ ! -f "/shared/c4gh.sec.pem" ]; then
+#    curl -s -L https://github.com/neicnordic/crypt4gh/releases/download/v"${C4GH_VERSION}"/crypt4gh_linux_x86_64.tar.gz | tar -xz -C /shared/ && chmod +x /shared/crypt4gh
+#    /shared/crypt4gh generate -n /shared/c4gh -p c4ghpass
+#fi
 if [ ! -f "/shared/c4gh.sec.pem" ]; then
     curl -s -L https://github.com/neicnordic/crypt4gh/releases/download/v"${C4GH_VERSION}"/crypt4gh_linux_x86_64.tar.gz | tar -xz -C /shared/ && chmod +x /shared/crypt4gh
-    /shared/crypt4gh generate -n /shared/c4gh -p c4ghpass
+#    /shared/crypt4gh generate -n /shared/c4gh -p c4ghpass
 fi
+cp /scripts/c4gh.sec.pem /shared/c4gh.sec.pem
+cp /scripts/c4gh.pub.pem /shared/c4gh.pub.pem
 
 ## create TLS certificates
 bash /scripts/certs/make_certs.sh
+
