@@ -115,4 +115,7 @@ chmod 640 auth.key
 chown 0:65534 client.*
 chmod 640 client.*
 
+chown 0:65534 server.*
+chmod 640 server.*
+
 cp ca.crt /cacert/ca-certificates.crt
