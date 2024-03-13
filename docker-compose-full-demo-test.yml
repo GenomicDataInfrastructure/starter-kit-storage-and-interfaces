@@ -95,7 +95,7 @@ services:
       credentials:
         condition: service_completed_successfully
     ports:
-      - "50443:50443"
+      - "50051:50051"
     restart: always
     volumes:
       - ${CONFIG_FILEPATH}:/config.yaml

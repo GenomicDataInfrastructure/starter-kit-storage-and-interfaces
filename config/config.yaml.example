@@ -27,10 +27,10 @@ c4gh:
   passphrase: "c4ghpass"
   filepath: "/shared/c4gh.sec.pem"
 
-grpc:
-  cacert: "/shared/cert/ca.crt"
-  serverkey: "/shared/cert/server.key"
-  servercert: "/shared/cert/server.crt"
+# grpc:
+#   cacert: "/shared/cert/ca.crt"
+#   serverkey: "/shared/cert/server.key"
+#   servercert: "/shared/cert/server.crt"
 
 db:
   host: "postgres"
