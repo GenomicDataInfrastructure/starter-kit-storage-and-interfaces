@@ -27,6 +27,10 @@ c4gh:
   passphrase: "c4ghpass"
   filepath: "/shared/c4gh.sec.pem"
 
+reencrypt:
+  host: "reencrypt"
+  port: 50051
+
 # grpc:
 #   cacert: "/shared/cert/ca.crt"
 #   serverkey: "/shared/cert/server.key"
