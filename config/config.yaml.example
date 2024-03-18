@@ -31,11 +31,6 @@ reencrypt:
   host: "reencrypt"
   port: 50051
 
-# grpc:
-#   cacert: "/shared/cert/ca.crt"
-#   serverkey: "/shared/cert/server.key"
-#   servercert: "/shared/cert/server.crt"
-
 db:
   host: "postgres"
   port: 5432
