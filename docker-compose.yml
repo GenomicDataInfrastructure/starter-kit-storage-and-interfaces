@@ -63,7 +63,7 @@ services:
       interval: 5s
       timeout: 20s
       retries: 20
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.94-rabbitmq
+    image: ghcr.io/neicnordic/sensitive-data-archive:PR761-rabbitmq
     networks:
       - secure
     ports:
@@ -87,7 +87,7 @@ services:
       interval: 5s
       timeout: 20s
       retries: 20
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.94-postgres
+    image: ghcr.io/neicnordic/sensitive-data-archive:PR761-postgres
     networks:
       - secure
     restart: always
@@ -139,7 +139,7 @@ services:
       - OIDC_CONFIGURATION_URL=http://${DOCKERHOST:-dockerhost}:8080/oidc/.well-known/openid-configuration
     extra_hosts:
       - ${DOCKERHOST:-dockerhost}:host-gateway
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.94-download
+    image: ghcr.io/neicnordic/sensitive-data-archive:PR761-download
     networks:
       - public
       - secure
@@ -170,7 +170,7 @@ services:
       - BROKER_USER=${finalize_BROKER_USER}
       - DB_PASSWORD=${finalize_DB_PASSWORD}
       - DB_USER=${finalize_DB_USER}
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.94
+    image: ghcr.io/neicnordic/sensitive-data-archive:PR761
     networks:
       - secure
     restart: always
@@ -196,7 +196,7 @@ services:
       - BROKER_USER=${ingest_BROKER_USER}
       - DB_PASSWORD=${ingest_DB_PASSWORD}
       - DB_USER=${ingest_DB_USER}
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.94
+    image: ghcr.io/neicnordic/sensitive-data-archive:PR761
     networks:
       - secure
     restart: always
@@ -222,12 +222,34 @@ services:
       - BROKER_USER=${mapper_BROKER_USER}
       - DB_PASSWORD=${mapper_DB_PASSWORD}
       - DB_USER=${mapper_DB_USER}
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.94
+    image: ghcr.io/neicnordic/sensitive-data-archive:PR761
     networks:
       - secure
     restart: always
     volumes:
       - ${CONFIG_FILEPATH}:/config.yaml
+
+  reencrypt:
+    image: ghcr.io/neicnordic/sensitive-data-archive:PR761
+    command: sda-reencrypt
+    container_name: reencrypt
+    depends_on:
+      credentials:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      s3:
+        condition: service_healthy
+    ports:
+      - "50051:50051"
+    restart: always
+    networks:
+      - secure
+    volumes:
+      - ${CONFIG_FILEPATH}:/config.yaml
+      - shared:/shared
 
   verify:
     command: sda-verify
@@ -248,7 +270,7 @@ services:
       - BROKER_USER=${verify_BROKER_USER}
       - DB_PASSWORD=${verify_DB_PASSWORD}
       - DB_USER=${verify_DB_USER}
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.94
+    image: ghcr.io/neicnordic/sensitive-data-archive:PR761
     networks:
       - secure
     restart: always
@@ -277,7 +299,7 @@ services:
       - SERVER_JWTPUBKEYURL=http://${DOCKERHOST:-dockerhost}:8080/oidc/jwk
     extra_hosts:
       - ${DOCKERHOST:-dockerhost}:host-gateway
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.94
+    image: ghcr.io/neicnordic/sensitive-data-archive:PR761
     networks:
       - public
       - secure

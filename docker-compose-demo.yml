@@ -89,6 +89,11 @@ services:
     extends:
       file: docker-compose.yml
       service: mapper
+  
+  reencrypt:
+    extends:
+      file: docker-compose.yml
+      service: reencrypt
 
   verify:
     extends:
