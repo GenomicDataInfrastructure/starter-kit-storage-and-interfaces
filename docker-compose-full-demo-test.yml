@@ -97,11 +97,12 @@ services:
     networks:
       - secure
     ports:
-      - "50051:50051"
+      - "50443:50443"
     restart: always
     volumes:
       - ${CONFIG_FILEPATH}:/config.yaml
       - shared:/shared
+      - cacert:/etc/ssl/certs/
 
   postgres:
     container_name: postgres
