@@ -102,7 +102,28 @@ services:
     environment:
       - SERVER_JWTPUBKEYURL=https://oidc:8080/jwk
     volumes:
-    - cacert:/etc/ssl/certs/
+      - cacert:/etc/ssl/certs/
+
+
+  reencrypt:
+    image: ghcr.io/neicnordic/sensitive-data-archive:v0.3.25
+    command: [sda-reencrypt]
+    container_name: reencrypt
+    depends_on:
+      credentials:
+        condition: service_completed_successfully
+    ports:
+      - "50443:50443"
+    restart: always
+    networks:
+      - public
+      - secure
+    volumes:
+      - ${CONFIG_FILEPATH}:/config.yaml
+      - ${ISS_FILEPATH}:/iss.json
+      - shared:/shared
+      - cacert:/cacert
+
 
 volumes:
   cacert:
