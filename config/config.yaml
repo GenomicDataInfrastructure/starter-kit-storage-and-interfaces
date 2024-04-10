@@ -54,6 +54,16 @@ oidc:
   trusted:
     iss: "/iss.json"
 
+grpc:
+  host: "reencrypt"
+  port: 50443
+  cacert: "/shared/cert/ca.crt"
+  serverkey: "/shared/cert/server.key"
+  servercert: "/shared/cert/server.crt"
+  clientkey: "/shared/cert/client.key"
+  clientcert: "/shared/cert/client.crt"
+  timeout: 5
+
 schema:
   type: isolated
 
