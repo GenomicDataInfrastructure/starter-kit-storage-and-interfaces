@@ -3,7 +3,7 @@ app: # this is for download
   port: "8443"
 
 archive:
-  type: "s3seekable"
+  type: "s3"
   url: "http://s3"
   port: 9000
   accesskey: "access"
