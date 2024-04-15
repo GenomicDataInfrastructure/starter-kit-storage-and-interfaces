@@ -137,10 +137,10 @@ services:
       - DB_PASSWORD=${download_DB_PASSWORD}
       - DB_USER=${download_DB_USER}
       - OIDC_CONFIGURATION_URL=http://${DOCKERHOST:-dockerhost}:8080/oidc/.well-known/openid-configuration
+      - ARCHIVE_TYPE=s3seekable
     extra_hosts:
       - ${DOCKERHOST:-dockerhost}:host-gateway
-    image: harbor.nbis.se/gdi/sda-download:2024-04-11
-    # image: ghcr.io/neicnordic/sensitive-data-archive:v0.3.25-download
+    image: harbor.nbis.se/gdi/sda-download:20240415
     networks:
       - public
       - secure
