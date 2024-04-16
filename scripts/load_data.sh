@@ -7,15 +7,8 @@ pip -q install s3cmd
 
 FILES="htsnexus_test_NA12878.bam htsnexus_test_NA12878.bam.bai htsnexus_test_NA12878.bam.blocks.yaml htsnexus_test_NA12878.bam.gzi"
 for file in ${FILES}; do
-    #curl -s -L -o "$file" "https://github.com/ga4gh/htsget-refserver/raw/main/data/gcp/gatk-test-data/wgs_bam/$file"
     curl -s -L -o "$file" "https://github.com/umccr/htsget-rs/raw/main/data/bam/$file"
 
-    #case $file in (*.bai)
-    #    newname="$(basename "$file" .bai).bam.bai"
-    #    mv "$file" "$newname"
-    #    file="$newname"
-    # ;;
-    #esac
 
     yes | /shared/crypt4gh encrypt -p /shared/c4gh.pub.pem -f "$file"
     ENC_SHA=$(sha256sum "$file.c4gh" | cut -d' ' -f 1)
