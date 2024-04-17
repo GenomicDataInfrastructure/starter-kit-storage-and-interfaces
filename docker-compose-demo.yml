@@ -112,11 +112,8 @@ services:
     depends_on:
       credentials:
         condition: service_completed_successfully
-    ports:
-      - "50443:50443"
     restart: always
     networks:
-      - public
       - secure
     volumes:
       - ${CONFIG_FILEPATH}:/config.yaml
