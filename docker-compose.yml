@@ -34,7 +34,7 @@ services:
       - OIDC_PROVIDER=http://${DOCKERHOST:-localhost}:8080/oidc/
       - OIDC_SECRET=${auth_ELIXIR_SECRET}
       - OIDC_JWKPATH=jwk
-      - OIDC_REDIRECTURL=http://localhost:8085/elixir/login
+      - OIDC_REDIRECTURL=http://localhost:8085/oidc/login
       - LOG_LEVEL=debug
       - RESIGNJWT=false
     extra_hosts:
@@ -44,6 +44,8 @@ services:
       - ${CONFIG_FILEPATH}:/config.yaml
     ports:
       - 8085:8080
+    networks:
+      - my-app-network
     restart: always
 
   rabbitmq:
@@ -313,3 +315,5 @@ volumes:
 networks:
   public:
   secure:
+  my-app-network:
+    external: true
