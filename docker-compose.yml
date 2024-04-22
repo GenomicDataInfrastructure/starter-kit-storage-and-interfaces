@@ -24,7 +24,7 @@ services:
 
   auth:
     container_name: auth
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.3.25-auth
+    image: ghcr.io/neicnordic/sensitive-data-archive:v0.3.25
     depends_on:
       credentials:
         condition: service_completed_successfully
