@@ -289,6 +289,22 @@ services:
       - ${CONFIG_FILEPATH}:/config.yaml
       - shared:/shared
 
+  reencrypt:
+    command: [sda-reencrypt]
+    container_name: reencrypt
+    depends_on:
+      credentials:
+        condition: service_completed_successfully
+    image: ghcr.io/neicnordic/sensitive-data-archive:v0.3.25
+    networks:
+      - secure
+    restart: always
+    volumes:
+      - ${CONFIG_FILEPATH}:/config.yaml
+      - ${ISS_FILEPATH}:/iss.json
+      - shared:/shared
+      - cacert:/cacert
+
 volumes:
   cacert:
   pgdata:
