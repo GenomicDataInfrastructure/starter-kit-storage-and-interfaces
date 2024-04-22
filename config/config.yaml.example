@@ -2,6 +2,10 @@ app: # this is for download
   host: "0.0.0.0"
   port: "8443"
 
+auth:
+  s3inbox: "http://localhost:8000"
+  publicFile: "/shared/c4gh.pub.pem"
+
 archive:
   type: "s3"
   url: "http://s3"

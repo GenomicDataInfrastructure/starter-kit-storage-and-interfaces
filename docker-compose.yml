@@ -24,25 +24,24 @@ services:
 
   auth:
     container_name: auth
+    command: sda-auth
     image: ghcr.io/neicnordic/sensitive-data-archive:v0.3.25
     depends_on:
       credentials:
         condition: service_completed_successfully
     environment:
-      - ELIXIR_ID=${auth_ELIXIR_ID}
-      - ELIXIR_PROVIDER=http://${DOCKERHOST:-localhost}:8080/oidc/
-      - ELIXIR_SECRET=${auth_ELIXIR_SECRET}
-      - ELIXIR_JWKPATH=jwk
-      - ELIXIR_REDIRECTURL=http://localhost:8085/elixir/login
-      - LOG_LEVEL=info
-      - PUBLICFILE=/shared/c4gh.pub.pem
-      - RESIGNJWT=false
-      - S3INBOX=http://localhost:8000
+      - OIDC_ID=${auth_ELIXIR_ID}
+      - OIDC_PROVIDER=http://${DOCKERHOST:-localhost}:8080/oidc/
+      - OIDC_SECRET=${auth_ELIXIR_SECRET}
+      - OIDC_JWKPATH=jwk
+      - OIDC_REDIRECTURL=http://localhost:8085/elixir/login
       - LOG_LEVEL=debug
+      - RESIGNJWT=false
     extra_hosts:
       - ${DOCKERHOST:-localhost}:host-gateway
     volumes:
       - shared:/shared
+      - ${CONFIG_FILEPATH}:/config.yaml
     ports:
       - 8085:8080
     restart: always
@@ -290,7 +289,7 @@ services:
       - shared:/shared
 
   reencrypt:
-    command: [sda-reencrypt]
+    command: sda-reencrypt
     container_name: reencrypt
     depends_on:
       credentials:
