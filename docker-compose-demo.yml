@@ -104,22 +104,10 @@ services:
     volumes:
       - cacert:/etc/ssl/certs/
 
-
   reencrypt:
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.3.25
-    command: [sda-reencrypt]
-    container_name: reencrypt
-    depends_on:
-      credentials:
-        condition: service_completed_successfully
-    restart: always
-    networks:
-      - secure
-    volumes:
-      - ${CONFIG_FILEPATH}:/config.yaml
-      - ${ISS_FILEPATH}:/iss.json
-      - shared:/shared
-      - cacert:/cacert
+    extends:
+      file: docker-compose.yml
+      service: reencrypt
 
 
 volumes:
