@@ -24,11 +24,11 @@ Add the `sda-auth` client by creating a file `configuration/aai-mock/clients/cli
 client-name: "auth"
 client-id: "XC56EL11xx"
 client-secret: "wHPVQaYXmdDHg"
-redirect-uris: ["http://localhost:8085/elixir/login"]
+redirect-uris: ["http://localhost:8085/oidc/login"]
 token-endpoint-auth-method: "client_secret_basic"
 scope: ["openid", "profile", "email", "ga4gh_passport_v1", "eduperson_entitlement"]
 grant-types: ["authorization_code"]
-post-logout-redirect-uris: ["http://localhost:8085/elixir/login"]
+post-logout-redirect-uris: ["http://localhost:8085/oidc/login"]
 ```
 
 Now that everything should be configured properly, from the root folder of the `starter-kit-lsaai-mock` run:
