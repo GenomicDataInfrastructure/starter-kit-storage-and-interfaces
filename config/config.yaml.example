@@ -3,7 +3,7 @@ app: # this is for download
   port: "8443"
 
 auth:
-  s3inbox: "http://localhost:8000"
+  s3Inbox: "http://localhost:8000"
   publicFile: "/shared/c4gh.pub.pem"
 
 archive:
