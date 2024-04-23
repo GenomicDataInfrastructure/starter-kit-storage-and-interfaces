@@ -302,7 +302,6 @@ services:
     restart: always
     volumes:
       - ${CONFIG_FILEPATH}:/config.yaml
-      - ${ISS_FILEPATH}:/iss.json
       - shared:/shared
       - cacert:/cacert
 
