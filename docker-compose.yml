@@ -44,8 +44,6 @@ services:
       - ${CONFIG_FILEPATH}:/config.yaml
     ports:
       - 8085:8080
-    networks:
-      - my-app-network
     restart: always
 
   rabbitmq:
@@ -314,5 +312,3 @@ volumes:
 networks:
   public:
   secure:
-  my-app-network:
-    external: true
