@@ -303,6 +303,39 @@ services:
       - shared:/shared
       - cacert:/cacert
 
+  nginx:
+    image: nginx:mainline-alpine3.17-slim
+    # image: nginxinc/nginx-unprivileged:1.24-alpine3.18-slim
+    depends_on:
+      download:
+        condition: service_started
+    ports:
+      - 8440:443
+      # - 8440:80
+    volumes:
+      - ./tls_nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - shared:/shared
+    networks:
+      - public
+      - secure
+
+  haproxy:
+    image: haproxy:lts
+    depends_on:
+      nginx:
+        condition: service_started
+    ports:
+      - 10080:80
+      - 10443:443
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - shared:/shared
+    networks:
+      - public
+      - secure
+    extra_hosts:
+      - ${DOCKERHOST:-dockerhost}:host-gateway
+
 volumes:
   cacert:
   pgdata:

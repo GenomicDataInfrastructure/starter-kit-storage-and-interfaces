@@ -109,6 +109,16 @@ services:
       file: docker-compose.yml
       service: reencrypt
 
+  nginx:
+    extends:
+      file: docker-compose.yml
+      service: nginx
+
+  haproxy:
+    extends:
+      file: docker-compose.yml
+      service: haproxy
+
 
 volumes:
   cacert:
