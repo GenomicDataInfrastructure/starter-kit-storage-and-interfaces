@@ -90,11 +90,11 @@ curl -s -H "Authorization: Bearer $token" "http://localhost:8443/metadata/datase
 
 The `sda-download` service offers multiple methods for downloading files through the API, with options for both encrypted and unencrypted results. Below, you will find an example illustrating each of these methods.
 
-First,  obtain the `fileID` and `filename` using the following command. The `datasetID`, which is `DATASET0001`, can be obtained by following the instructions at [List datasets](#list-datasets)
+To download the file `htsnexus_test_NA12878.bam`, first obtain the respective `fileID` using the following command. The `datasetID`, which is `DATASET0001`, can be obtained by following the instructions at [List datasets](#list-datasets)
 
 ```bash
-fileID=$(curl -s -H "Authorization: Bearer $token" "http://localhost:8443/metadata/datasets/$datasetID/files" | jq -r '.[1].fileId')
-filename=$(curl -s -H "Authorization: Bearer $token" "http://localhost:8443/metadata/datasets/$datasetID/files" | jq -r --arg fileID "$fileID" '.[] | select(.fileId == $fileID) | .displayFileName | rtrimstr(".c4gh")')
+filename="htsnexus_test_NA12878.bam"
+fileID=$(curl -s -H "Authorization: Bearer $token" "http://localhost:8443/metadata/datasets/$datasetID/files" | jq -r --arg filename "$filename".c4gh '.[] | select(.displayFileName==$filename) | .fileId')
 ```
 
 #### 1. Download unencrypted file from the `/files` endpoint
