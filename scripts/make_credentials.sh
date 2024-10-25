@@ -10,7 +10,7 @@ apt-get -o DPkg::Lock::Timeout=60 install -y curl jq postgresql-client openssl >
 pip install --upgrade pip > /dev/null
 pip install aiohttp Authlib joserfc requests > /dev/null
 
-for n in download finalize inbox ingest mapper sync verify; do
+for n in api auth download finalize inbox ingest mapper sync verify; do
     echo "creating credentials for: $n"
     ## password and permissions for MQ
     body_data=$(jq -n -c --arg password "$n" --arg tags none '$ARGS.named')
