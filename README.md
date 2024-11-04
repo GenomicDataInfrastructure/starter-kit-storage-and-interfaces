@@ -31,12 +31,6 @@ grant-types: ["authorization_code"]
 post-logout-redirect-uris: ["http://localhost:8085/oidc/login"]
 ```
 
-Now that everything should be configured properly, from the root folder of the `starter-kit-lsaai-mock` run:
-
-```shell
-docker compose up -d
-```
-
 ## Starting storage-and-interfaces with LS-AAI-mock
 
 From the root of the `starter-kit-storage-and-interfaces` folder and run:
@@ -45,7 +39,11 @@ From the root of the `starter-kit-storage-and-interfaces` folder and run:
 docker compose up -d
 ```
 
-Note that the above two commands need to be run in that specific order because the `LS-AAI-mock` compose creates the external network `my-app-network` which is used to communicate with the `aai-mock` service.
+and then from the root folder of the `starter-kit-lsaai-mock` run:
+
+```shell
+docker compose up -d
+```
 
 ## Starting the stack in standalone demo mode
 
