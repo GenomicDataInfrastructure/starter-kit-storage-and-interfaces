@@ -156,8 +156,7 @@ mappings=$(
         '$ARGS.positional' \
         --args "FILE0000001" \
         --args "FILE0000002" \
-        --args "FILE0000003" \
-        --args "FILE0000004"
+        --args "FILE0000003"
 )
 
 mapping_payload=$(

@@ -62,7 +62,7 @@ services:
       interval: 5s
       timeout: 20s
       retries: 20
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.3.25-rabbitmq
+    image: ghcr.io/neicnordic/sensitive-data-archive:v0.3.165-rabbitmq
     networks:
       - secure
     ports:
@@ -86,7 +86,7 @@ services:
       interval: 5s
       timeout: 20s
       retries: 20
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.3.25-postgres
+    image: ghcr.io/neicnordic/sensitive-data-archive:v0.3.165-postgres
     networks:
       - secure
     restart: always
@@ -122,6 +122,38 @@ services:
       - s3data:/data
 
   ## data ingest pipeline
+  api:
+    command: sda-api
+    container_name: api
+    depends_on:
+      credentials:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - API_ADMINFILE=/shared/admin.json
+      - BROKER_PASSWORD=test
+      - BROKER_USER=test
+      - BROKER_QUEUE=test
+      - DB_PASSWORD=api
+      - DB_USER=api
+      - SERVER_JWTPUBKEYURL=http://${DOCKERHOST:-dockerhost}:8080/oidc/jwk
+    image: ghcr.io/neicnordic/sensitive-data-archive:v0.3.143
+    ports:
+      - "8090:8080"
+    networks:
+      - public
+      - secure
+    extra_hosts:
+      - ${DOCKERHOST:-dockerhost}:host-gateway
+    restart: always
+    volumes:
+      - ${CONFIG_FILEPATH}:/config.yaml
+      - ${ISS_FILEPATH}:/iss.json25-rabbitmq
+      - shared:/shared
+
   download:
     command: sda-download
     container_name: download

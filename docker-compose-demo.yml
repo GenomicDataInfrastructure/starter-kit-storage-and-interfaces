@@ -65,6 +65,18 @@ services:
       service: s3
 
   ## data ingest pipeline
+  api:
+    extends:
+      file: docker-compose.yml
+      service: api
+    depends_on:
+      oidc:
+        condition: service_healthy
+    environment:
+      - SERVER_JWTPUBKEYURL=https://oidc:8080/jwk
+    volumes:
+      - cacert:/etc/ssl/certs/
+      
   download:
     extends:
       file: docker-compose.yml

@@ -10,13 +10,12 @@ apt-get -o DPkg::Lock::Timeout=60 install -y curl jq postgresql-client openssl >
 pip install --upgrade pip > /dev/null
 pip install aiohttp Authlib joserfc requests > /dev/null
 
-for n in download finalize inbox ingest mapper sync verify; do
+for n in api download finalize inbox ingest mapper sync verify; do
     echo "creating credentials for: $n"
     ## password and permissions for MQ
     body_data=$(jq -n -c --arg password "$n" --arg tags none '$ARGS.named')
     curl -s -u test:test -X PUT "http://rabbitmq:15672/api/users/$n" -H "content-type:application/json" -d "${body_data}"
     curl -s -u test:test -X PUT "http://rabbitmq:15672/api/permissions/sda/$n" -H "content-type:application/json" -d '{"configure":"","write":"sda","read":".*"}'
-
 
     psql -U postgres -h postgres -d sda -c "ALTER ROLE $n LOGIN PASSWORD '$n';"
 done
@@ -47,6 +46,14 @@ human_readable_sizes = true
 multipart_chunk_size_mb = 50
 use_https = False
 socket_timeout = 30
+EOD
+
+cat >/shared/admin.json <<EOD
+[
+"jd123@lifescience-ri.eu",
+"dummy@gdi.eu",
+"requester@demo.org"
+]
 EOD
 
 ## create crypt4gh key
