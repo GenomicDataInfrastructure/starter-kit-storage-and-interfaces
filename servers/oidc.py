@@ -51,7 +51,7 @@ def _generate_token() -> Tuple:
         "kid": ec_key1.thumbprint()
     }
     trusted_payload = {
-        "sub": "requester@demo.org",
+        "sub": "dummy@gdi.eu",
         "aud": ["aud1", "aud2"],
         "azp": "azp",
         "scope": "openid ga4gh_passport_v1",
@@ -61,7 +61,7 @@ def _generate_token() -> Tuple:
         "jti": "6ad7aa42-3e9c-4833-bd16-765cb80c2102",
     }
     untrusted_payload = {
-        "sub": "requester@demo.org",
+        "sub": "dummy@gdi.eu",
         "aud": ["aud2", "aud3"],
         "azp": "azp",
         "scope": "openid ga4gh_passport_v1",
@@ -71,7 +71,7 @@ def _generate_token() -> Tuple:
         "jti": "6ad7aa42-3e9c-4833-bd16-765cb80c2102",
     }
     empty_payload = {
-        "sub": "requester@demo.org",
+        "sub": "dummy@gdi.eu",
         "iss": "https://oidc:8080/",
         "exp": 99999999999,
         "iat": 1547794655,
@@ -80,7 +80,7 @@ def _generate_token() -> Tuple:
     # Craft passports
     passport_terms = {
         "iss": "https://oidc:8080/",
-        "sub": "requester@demo.org",
+        "sub": "dummy@gdi.eu",
         "ga4gh_visa_v1": {
             "type": "AcceptedTermsAndPolicies",
             "value": "https://doi.org/10.1038/s41431-018-0219-y",
@@ -95,7 +95,7 @@ def _generate_token() -> Tuple:
     # passport for dataset permissions 1
     passport_dataset1 = {
         "iss": "https://oidc:8080/",
-        "sub": "requester@demo.org",
+        "sub": "dummy@gdi.eu",
         "ga4gh_visa_v1": {
             "type": "ControlledAccessGrants",
             "value": "DATASET0001",
@@ -110,7 +110,7 @@ def _generate_token() -> Tuple:
     # passport for dataset permissions 2
     passport_dataset2 = {
         "iss": "https://demo1.example",
-        "sub": "requester@demo.org",
+        "sub": "dummy@gdi.eu",
         "ga4gh_visa_v1": {
             "type": "ControlledAccessGrants",
             "value": "bamfile-dataset",
