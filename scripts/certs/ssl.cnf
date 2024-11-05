@@ -82,7 +82,7 @@ subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid,issuer:always
 keyUsage = critical, digitalSignature, keyEncipherment
 extendedKeyUsage = clientAuth, serverAuth
-subjectAltName = DNS:localhost,DNS:proxy,IP:127.0.0.1
+subjectAltName = DNS:localhost,DNS:proxy,IP:127.0.0.1, DNS: oidc
 
 [ server_cert ]
 # Extensions for server certificates (`man x509v3_config`).
