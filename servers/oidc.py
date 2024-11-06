@@ -268,8 +268,10 @@ async def jwk_response(request: web.Request) -> web.Response:
 
 async def tokens_response(request: web.Request) -> web.Response:
     """Serve generated tokens."""
+    web.Response.headers['Access-Control-Allow-Origin'] = 'no-cors'
     # trusted visas, empty token, untrusted visas
     data = [DATA[1], DATA[2], DATA[3]]
+    print("token requested")
     return web.json_response(data)
 
 
@@ -296,6 +298,8 @@ def init() -> web.Application:
     app = web.Application()
     app.router.add_get("/jwk", jwk_response)
     app.router.add_get("/tokens", tokens_response)
+    app.tokens_response.append(tokens_response)
+
     app.router.add_get("/userinfo", userinfo)
     app.router.add_get("/.well-known/openid-configuration", fixed_response)
     return app
