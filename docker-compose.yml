@@ -26,9 +26,13 @@ services:
     container_name: auth
     command: sda-auth
     image: ghcr.io/neicnordic/sensitive-data-archive:v0.3.25
+    networks:
+      - secure
     depends_on:
       credentials:
         condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
     environment:
       - OIDC_ID=${auth_ELIXIR_ID}
       - OIDC_PROVIDER=http://${DOCKERHOST:-localhost}:8080/oidc/
@@ -37,6 +41,8 @@ services:
       - OIDC_REDIRECTURL=http://localhost:8085/oidc/login
       - LOG_LEVEL=debug
       - RESIGNJWT=false
+      - DB_PASSWORD=${auth_DB_PASSWORD}
+      - DB_USER=${auth_DB_USER}
     extra_hosts:
       - ${DOCKERHOST:-localhost}:host-gateway
     volumes:
