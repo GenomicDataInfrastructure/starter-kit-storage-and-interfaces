@@ -39,6 +39,7 @@ services:
       - RESIGNJWT=false
     extra_hosts:
       - ${DOCKERHOST:-localhost}:host-gateway
+      - "host.docker.internal:host-gateway"
     volumes:
       - shared:/shared
       - ${CONFIG_FILEPATH}:/config.yaml
