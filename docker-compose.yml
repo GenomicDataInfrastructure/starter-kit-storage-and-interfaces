@@ -14,6 +14,8 @@ services:
         condition: service_healthy
     environment:
       - PGPASSWORD=${credentials_PGPASSWORD}
+    env_file:
+      - .env
     image: python:3.10-slim
     networks:
       - secure
@@ -270,11 +272,11 @@ services:
       s3:
         condition: service_healthy
     environment:
-      - BROKER_PASSWORD=${s3inbox_BROKER_PASSWORD}
-      - BROKER_ROUTINGKEY=${s3inbox_BROKER_ROUTINGKEY}
-      - BROKER_USER=${s3inbox_BROKER_USER}
-      - DB_PASSWORD=${s3inbox_DB_PASSWORD}
-      - DB_USER=${s3inbox_DB_USER}
+      - BROKER_PASSWORD=${inbox_BROKER_PASSWORD}
+      - BROKER_ROUTINGKEY=${inbox_BROKER_ROUTINGKEY}
+      - BROKER_USER=${inbox_BROKER_USER}
+      - DB_PASSWORD=${inbox_DB_PASSWORD}
+      - DB_USER=${inbox_DB_USER}
       - SERVER_JWTPUBKEYURL=http://${DOCKERHOST:-dockerhost}:8080/oidc/jwk
     extra_hosts:
       - ${DOCKERHOST:-dockerhost}:host-gateway

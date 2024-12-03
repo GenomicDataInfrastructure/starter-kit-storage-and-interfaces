@@ -12,13 +12,19 @@ pip install aiohttp Authlib joserfc requests > /dev/null
 
 for n in download finalize inbox ingest mapper sync verify; do
     echo "creating credentials for: $n"
-    ## password and permissions for MQ
-    body_data=$(jq -n -c --arg password "$n" --arg tags none '$ARGS.named')
+    db_password=$(eval echo \$$n"_DB_PASSWORD")
+    mq_password=$(eval echo \$$n"_BROKER_PASSWORD")
+    db_password=${db_password:-$n}
+    mq_password=${mq_password:-$n}
+
+    echo "role: $n, db password: $db_password, mq password: $mq_password"
+    ## setting passwords and permissions for MQ
+    body_data=$(jq -n -c --arg password "$mq_password" --arg tags none '$ARGS.named')
     curl -s -u test:test -X PUT "http://rabbitmq:15672/api/users/$n" -H "content-type:application/json" -d "${body_data}"
     curl -s -u test:test -X PUT "http://rabbitmq:15672/api/permissions/sda/$n" -H "content-type:application/json" -d '{"configure":"","write":"sda","read":".*"}'
 
-
-    psql -U postgres -h postgres -d sda -c "ALTER ROLE $n LOGIN PASSWORD '$n';"
+    ## setting passwords and permissions for DB
+    psql -U postgres -h postgres -d sda -c "ALTER ROLE $n LOGIN PASSWORD '$db_password';"
 done
 
 # create EC256 key for signing the JWT tokens
