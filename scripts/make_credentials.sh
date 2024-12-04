@@ -17,7 +17,6 @@ for n in download finalize inbox ingest mapper sync verify; do
     db_password=${db_password:-$n}
     mq_password=${mq_password:-$n}
 
-    echo "role: $n, db password: $db_password, mq password: $mq_password"
     ## setting passwords and permissions for MQ
     body_data=$(jq -n -c --arg password "$mq_password" --arg tags none '$ARGS.named')
     curl -s -u test:test -X PUT "http://rabbitmq:15672/api/users/$n" -H "content-type:application/json" -d "${body_data}"
