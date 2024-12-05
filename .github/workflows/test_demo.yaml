@@ -16,6 +16,7 @@ jobs:
           cp config/config.yaml.example config/config.yaml
           cp config/iss.json.example config/iss.json
           cp .env.example .env
+          sed -E -i  's/(_DB_PASSWORD=)([^ ]+)/\1\2New/;s/(_BROKER_PASSWORD=)([^ ]+)/\1\2New/ ' .env
           docker compose -f docker-compose-demo.yml up -d
           until [ "$(docker inspect data_loader  --format='{{.State.Status}}')" = "exited" ]; do
             echo "waithg for data_loader to finish"
