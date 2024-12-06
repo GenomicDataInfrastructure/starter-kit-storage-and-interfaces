@@ -12,6 +12,8 @@ services:
     depends_on:
       s3inbox:
         condition: service_started
+      oidc:
+        condition: service_healthy
     image: python:3.10-alpine
     networks:
       - secure
@@ -41,6 +43,7 @@ services:
     image: python:3.10-slim
     networks:
       - public
+      - secure
     ports:
       - "8080:8080"
     restart: always

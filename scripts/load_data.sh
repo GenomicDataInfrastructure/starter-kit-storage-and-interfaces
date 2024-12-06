@@ -1,9 +1,16 @@
 #!/bin/sh
 set -e
 
-apk -q --no-cache add curl jq
+apk -q --no-cache add curl jq postgresql-client
 
 pip -q install s3cmd
+
+token=$(curl -s -k https://oidc:8080/tokens | jq -r '.[0]')
+
+
+hash=$(sed -n '2p' /shared/c4gh.pub.pem | base64 -d -w0 | xxd -c64 -p)
+# insert a c4gh public key hash
+PGPASSWORD=rootpass psql -U postgres -h postgres -d sda -At -c "INSERT INTO sda.encryption_keys(key_hash, description) VALUES('$hash', 'test key') ON CONFLICT DO NOTHING;"
 
 FILES="htsnexus_test_NA12878.bam htsnexus_test_NA12878.bam.bai htsnexus_test_NA12878.bam.blocks.yaml htsnexus_test_NA12878.bam.gzi"
 for file in ${FILES}; do
@@ -44,7 +51,7 @@ for file in ${FILES}; do
         jq -r -c -n \
             --arg type ingest \
             --arg user dummy@gdi.eu \
-            --arg filepath dummy_gdi.eu/"$file.c4gh" \
+            --arg filepath "$file.c4gh" \
             --argjson encrypted_checksums "$encrypted_checksums" \
             '$ARGS.named|@base64'
     )
@@ -107,7 +114,7 @@ for file in ${FILES}; do
         jq -r -c -n \
             --arg type accession \
             --arg user dummy@gdi.eu \
-            --arg filepath dummy_gdi.eu/"$file.c4gh" \
+            --arg filepath "$file.c4gh" \
             --arg accession_id "FILE000000$I" \
             --argjson decrypted_checksums "$(echo "$MSG"| jq -r '.payload|fromjson|.decrypted_checksums|tostring')" \
             '$ARGS.named|@base64'
