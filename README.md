@@ -20,9 +20,14 @@ Detailed documentation on the `sda-pipeline` can be found at: [https://neic-sda.
 
 NeIC Sensitive Data Archive documentation can be found at: [https://neic-sda.readthedocs.io/en/latest/](https://neic-sda.readthedocs.io/en/latest/) .
 
+> [!IMPORTANT]  
+> The current version of the `sda-pipeline` does not support the [starter-kit-htsget](https://github.com/GenomicDataInfrastructure/starter-kit-htsget) for the moment.
+> 
+> For the [starter-kit-htsget](https://github.com/GenomicDataInfrastructure/starter-kit-htsget) to function an earlier version of the `download` service needs to be deployed until further notice. 
+
 ## Deployment
 
-There exist two compose files at the root of the repo.
+There exist two docker compose files at the root of the repo.
 - [docker-compose.yml](docker-compose.yml)
   - To bootstrap the *full stack* of `storage-and-interfaces` services 
   - Requires a running [`LS-AAI-mock`](https://github.com/GenomicDataInfrastructure/starter-kit-lsaai-mock) service. To configure the LS-AAI-mock service follow the instructions in that repo.
