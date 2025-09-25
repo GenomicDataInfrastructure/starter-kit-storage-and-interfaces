@@ -31,8 +31,9 @@ broker:
   # clientKey: /certificates/tls.key
 
 c4gh:
-  passphrase: ""
-  filepath: "/c4gh/gdi.sec.pem"
+  privateKeys:
+    - filepath: "/c4gh/gdi.sec.pem"
+      passphrase: ""
 
 db:
   host: "postgres"
