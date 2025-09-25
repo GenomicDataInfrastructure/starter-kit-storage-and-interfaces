@@ -62,6 +62,8 @@ Lastly, this repo includes a `docker-compose-demo.yml` file which deploys a stan
 
 Internet facing services such as `s3inbox`, `download` and `auth`, need to be secured via TLS certification. This can be most conveniently achieved by using [Let's Encrypt](https://letsencrypt.org/getting-started/) as Certificate Authority. Assuming shell access to your web host, a convenient way to set this up is through installing Certbot (or any other ACME client supported by Let's Encrypt). Detailed instructions on setting up Certbot for different systems can be found [here](https://certbot.eff.org/).
 
+For an example of how to set up the `sda-pipeline` with TLS, see [TLS-example/README.md](config/TLS-example/README.md)
+
 ## Authentication for users with LS-AAI (mock or alive)
 
 To interact with SDA services, users need to provide [JSON Web Token](https://jwt.io/) (JWT) authorization. Ultimately, tokens can be fetched by [LS-AAI](https://lifescience-ri.eu/ls-login/) upon user login to an OpenID Connect (OIDC) relaying party (RP) service that is [registered with LS-AAI](https://spreg-legacy.aai.elixir-czech.org/). An example of such an RP service is the [sda-auth](https://github.com/neicnordic/sda-auth), which is included in the present stack.
