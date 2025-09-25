@@ -302,7 +302,7 @@ datasetID=$(curl -s -H "Authorization: Bearer $token" http://localhost:8443/meta
 curl -s -H "Authorization: Bearer $token" "http://localhost:8443/metadata/datasets/$datasetID/files" | jq .
 ```
 
-#### Download a specific file
+#### Download a specific encrypted file
 
 The `sda-download` service offers multiple methods for downloading files through the API, with options for both encrypted and unencrypted results. Below, you will find an example illustrating each of these methods.
 
@@ -313,33 +313,20 @@ filename="htsnexus_test_NA12878.bam"
 fileID=$(curl -s -H "Authorization: Bearer $token" "http://localhost:8443/metadata/datasets/$datasetID/files" | jq -r --arg filename "$filename".c4gh '.[] | select(.displayFileName==$filename) | .fileId')
 ```
 
-##### 1. Download unencrypted file from the `/files` endpoint
-```bash
-curl -s -H "Authorization: Bearer $token" http://localhost:8443/files/$fileID -o "$filename"
-```
-After successful execution, the BAM file `htsnexus_test_NA12878.bam` will be downloaded to your current folder.
-
-##### 2. Download unencrypted file from the `/s3` endpoint
-```bash
-curl -s -H "Authorization: Bearer $token" http://localhost:8443/s3/$datasetID/$filename -o "$filename"
-```
-
-##### 3. Download encrypted file from the `/s3-encrypted` endpoint
-To download an encrypted file that is re-encrypted with a custom Crypt4GH public key, you need to first create a key pair by the [`sda-cli`](https://github.com/NBISweden/sda-cli) tool, instructions can be found [here](https://github.com/NBISweden/sda-cli?tab=readme-ov-file#create-keys).
+Create a crypt4gh key pair
 
 ```bash
-# create a crypt4gh key pair
-sda-cli createKey c4gh
+crypt4gh generate -n demokey
+pubkey=$(base64 -w0 demokey.pub.pem)
 ```
-```bash
-pubkey=$(base64 -w0 c4gh.pub.pem) 
-curl -s -H "Authorization: Bearer $token" -H "Client-Public-Key: $pubkey" http://localhost:8443/s3-encrypted/$datasetID/$filename -o "$filename.c4gh"
+```bash 
+curl -s -H "Authorization: Bearer $token" -H "Client-Public-Key: $pubkey" http://localhost:8443/s3/$datasetID/$filename -o "$filename.c4gh"
 ```
 
 After successful execution, the Crypt4GH encrypted BAM file `htsnexus_test_NA12878.bam.c4gh` will be downloaded to your current folder. This file can be decrypted using the private key of the key pair you have created by
 
 ```bash
-sda-cli decrypt -key c4gh.sec.pem htsnexus_test_NA12878.bam.c4gh
+sda-cli decrypt -key demokey.sec.pem htsnexus_test_NA12878.bam.c4gh
 ```
 
 ### Monitoring the status of services
