@@ -28,6 +28,12 @@ resource "helm_release" "sda_pipeline" {
     yamlencode(
       {
         "credentials" : {
+          api : {
+            dbUser : "api"
+            dbPassword : random_password.api.result
+            mqUser : "api"
+            mqPassword : random_password.api.result
+          },
           "download" : {
             "dbUser" : "download",
             "dbPassword" : random_password.download.result,
@@ -64,8 +70,15 @@ resource "helm_release" "sda_pipeline" {
             "mqUser" : "verify",
             "mqPassword" : random_password.verify.result,
           },
+          "auth" : {
+            "dbUser" : "auth",
+            "dbPassword" : random_password.auth.result,
+          },
         },
         "global" : {
+          "api" : {
+            "rbacFileSecret" : kubernetes_secret_v1.api_admins.metadata[0].name
+          }
           "archive" : {
             "storageType" : "s3",
             "s3Url" : var.s3URL,
@@ -90,10 +103,14 @@ resource "helm_release" "sda_pipeline" {
             "prefetchCount" : "0",
           },
           "c4gh" : {
+            "privateKeys": [
+            {
+              "keyName" : "c4gh.sec.pem"
+              "passphrase" : var.repository-c4gh-passphrase,
+              },
+            ]
+            "publicKey" : "c4gh.pub.pem",
             "secretName" : kubernetes_secret_v1.c4gh.metadata[0].name,
-            "keyFile" : "c4gh.sec.pem",
-            "passphrase" : var.repository-c4gh-passphrase,
-            "publicFile" : "c4gh.pub.pem",
           },
           "db" : {
             "host" : "${helm_release.sda_db.name}-sda-db",
@@ -119,12 +136,17 @@ resource "helm_release" "sda_pipeline" {
           "ingress" : {
             "deploy" : var.ingress-deploy,
             "hostName" : {
+              "api" : "api.${var.ingress-base}"
               "auth" : "login.${var.ingress-base}",
               "download" : "download.${var.ingress-base}",
-              "inbox" : "inbox.${var.ingress-base}",
+              "s3Inbox" : "inbox.${var.ingress-base}",
             },
             "ingressClassName" : var.ingress-class,
             "issuer" : var.letsencrypt-issuer,
+          },
+          "reencrypt" : {
+            "host": "pipeline-sda-svc-reencrypt"
+            "port": 50443
           },
           "oidc" : {
             "provider" : var.oidc-provider,
@@ -224,5 +246,15 @@ resource "kubernetes_network_policy_v1" "pipeline" {
     }
 
     policy_types = ["Egress", "Ingress"]
+  }
+}
+resource "kubernetes_secret_v1" "api_admins" {
+  depends_on = [kubernetes_namespace_v1.namespace]
+  metadata {
+    name      = "api-admins"
+    namespace = var.namespace
+  }
+  data = {
+    "rbac.json" = "${jsonencode(var.api-admins)}"
   }
 }

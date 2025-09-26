@@ -23,6 +23,14 @@ resource "random_password" "verify" {
   length  = 16
   special = false
 }
+resource "random_password" "auth" {
+  length  = 16
+  special = false
+}
+resource "random_password" "api" {
+  length  = 16
+  special = false
+}
 
 ### namespace ###
 resource "kubernetes_namespace_v1" "namespace" {

@@ -6,9 +6,9 @@ kubeconfig-path                = ""
 sda-services-backup-version = "v0.1.34"
 
 ### helm chart versions
-sda-db-version  = "0.8.8"
-sda-mq-version  = "0.7.9"
-sda-svc-version = "0.23.4"
+sda-db-version  = "2.0.20"
+sda-mq-version  = "2.0.20"
+sda-svc-version = "3.0.13"
 
 ### ingress
 ### ingress-base is the root domain, all exposed services will be reachable as sub domains.
@@ -40,3 +40,80 @@ s3SecretKey = ""
 s3BackupURL       = ""
 s3BackupAccessKey = ""
 s3BackupSecretKey = ""
+
+api-admins = {
+  "policy" : [
+    {
+      "role" : "admin",
+      "path" : "/c4gh-keys/*",
+      "action" : "(GET)|(POST)|(PUT)"
+    },
+    {
+      "role" : "admin",
+      "path" : "/file/verify/:accession",
+      "action" : "PUT"
+    },
+    {
+      "role" : "admin",
+      "path" : "/dataset/verify/:dataset",
+      "action" : "PUT"
+    },
+    {
+      "role" : "submission",
+      "path" : "/datasets/*",
+      "action" : "GET"
+    },
+    {
+      "role" : "submission",
+      "path" : "/dataset/*",
+      "action" : "(POST)|(PUT)"
+    },
+    {
+      "role" : "submission",
+      "path" : "/file/ingest",
+      "action" : "POST"
+    },
+    {
+      "role" : "submission",
+      "path" : "/file/accession",
+      "action" : "POST"
+    },
+    {
+      "role" : "submission",
+      "path" : "/file/*",
+      "action" : "DELETE"
+    },
+    {
+      "role" : "submission",
+      "path" : "/users",
+      "action" : "GET"
+    },
+    {
+      "role" : "submission",
+      "path" : "/users/:username/files",
+      "action" : "GET"
+    },
+    {
+      "role" : "*",
+      "path" : "/datasets",
+      "action" : "GET"
+    },
+    {
+      "role" : "*",
+      "path" : "/files",
+      "action" : "GET"
+    }
+  ],
+  "roles" : [
+    {
+      "role" : "admin",
+      "rolebinding" : "submission"
+    },
+    # Here add the users which should be admin or submission roles
+    # Example
+    # {
+    #   "role" : "${USER_ID]",
+    #   "rolebinding" : "admin"
+    # },
+  ]
+}
