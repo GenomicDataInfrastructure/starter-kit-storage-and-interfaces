@@ -139,7 +139,7 @@ where the access token has been truncated for brevity. Please note that the opti
 
 ### The sda-cli tool
 
-Instead of the tools above, users are **encouraged** to use [`sda-cli`](https://github.com/NBISweden/sda-cli), which is a tool specifically developed to perform all common SDA user-related tasks in a convenient and unified manner. It is recommended to use precompiled executables for `sda-cli` which can be found at [https://github.com/NBISweden/sda-cli/releases](https://github.com/NBISweden/sda-cli/releases)
+Instead of the tools above, users are **encouraged** to use [`sda-cli@v0.2.1`](https://github.com/NBISweden/sda-cli/releases/tag/v0.2.1), which is a tool specifically developed to perform all common SDA user-related tasks in a convenient and unified manner.
 
 To start using the tool run:
 
