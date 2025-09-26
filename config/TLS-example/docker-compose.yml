@@ -1,7 +1,8 @@
 services:
   auth:
     container_name: auth
-    image: ghcr.io/neicnordic/sensitive-data-archive:v3.0.14-auth
+    command: sda-auth
+    image: ghcr.io/neicnordic/sensitive-data-archive:v3.0.14
     networks:
       - public
     ports:
