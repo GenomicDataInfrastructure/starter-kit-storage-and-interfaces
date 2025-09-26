@@ -25,7 +25,7 @@ namespace = ""
 rabbitmq-admin-user = "admin"
 
 ### Storage backend configuration
-oidc-provider      = "https://login.elixir-czech.org/oidc"
+oidc-provider      = "https://login.aai.lifescience-ri.eu/oidc"
 oidc-client-id     = ""
 oidc-client-secret = ""
 
