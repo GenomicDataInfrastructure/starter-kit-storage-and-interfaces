@@ -6,17 +6,17 @@ This document contains information on how to work with the Sensitive Data Archiv
 
 The storage and interfaces software stack for the GDI-starter-kit consists of the following services:
 
-| Component    | Description                                                                                                                                                                                                          |
-|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| broker       | RabbitMQ based message broker, [SDA-MQ](https://github.com/neicnordic/sensitive-data-archive/tree/main/rabbitmq).                                                                                                    |
-| database     | PostgreSQL database, [SDA-DB](https://github.com/neicnordic/sensitive-data-archive/tree/main/postgresql).                                                                                                            |
-| storage      | S3 object store, demo uses Minio S3.                                                                                                                                                                                 |
-| auth         | OpenID Connect relaying party and authentication service, [SDA-auth](https://github.com/neicnordic/sensitive-data-archive/tree/main/sda-auth).                                                                       |
-| s3inbox      | Proxy inbox to the S3 backend store, [SDA-S3Inbox](https://github.com/neicnordic/sensitive-data-archive/tree/main/sda).                                                                                              |
-| download     | Data out solution for downloading files from the SDA, [SDA-download](https://github.com/neicnordic/sensitive-data-archive/tree/main/sda-download).                                                                   |
-| SDA-pipeline | The ingestion pipeline of the SDA, [SDA-pipeline](https://github.com/neicnordic/sensitive-data-archive/tree/main/sda). This comprises of the following core components: `ingest`, `verify`, `finalize` and `mapper`. |
+| Component    | Description                                                                                                                                                                                                                                     |
+|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| broker       | RabbitMQ based message broker, [SDA-MQ](https://github.com/neicnordic/sensitive-data-archive/tree/main/rabbitmq).                                                                                                                               |
+| database     | PostgreSQL database, [SDA-DB](https://github.com/neicnordic/sensitive-data-archive/tree/main/postgresql).                                                                                                                                       |
+| storage      | S3 object store, demo uses Minio S3.                                                                                                                                                                                                            |
+| auth         | OpenID Connect relaying party and authentication service, [SDA-auth](https://github.com/neicnordic/sensitive-data-archive/tree/main/cmd/auth/auth.md).                                                                                          |
+| s3inbox      | Proxy inbox to the S3 backend store, [SDA-S3Inbox](https://github.com/neicnordic/sensitive-data-archive/tree/main/sda/cmd/s3inbox/s3inbox.md).                                                                                                  |
+| download     | Data out solution for downloading files from the SDA, [SDA-download](https://github.com/neicnordic/sensitive-data-archive/tree/main/sda-download).                                                                                              |
+| SDA-pipeline | The ingestion pipeline of the SDA, [SDA-pipeline](https://github.com/neicnordic/sensitive-data-archive/tree/main/sda/sda.md). This comprises of the following core components: `auth`, `ingest`, `verify`, `finalize`, `s3inbox`, and `mapper`. |
 
-Detailed documentation on the `sda-pipeline` can be found at: [https://neic-sda.readthedocs.io/en/latest/services/pipeline)](https://neic-sda.readthedocs.io/en/latest/services/pipeline).
+Detailed documentation on the `sda-pipeline` can be found at: [https://neic-sda.readthedocs.io/en/latest/services/sda)](https://neic-sda.readthedocs.io/en/latest/services/sda).
 
 NeIC Sensitive Data Archive documentation can be found at: [https://neic-sda.readthedocs.io/en/latest/](https://neic-sda.readthedocs.io/en/latest/) .
 
@@ -66,7 +66,7 @@ For an example of how to set up the `sda-pipeline` with TLS, see [TLS-example/RE
 
 ## Authentication for users with LS-AAI (mock or alive)
 
-To interact with SDA services, users need to provide [JSON Web Token](https://jwt.io/) (JWT) authorization. Ultimately, tokens can be fetched by [LS-AAI](https://lifescience-ri.eu/ls-login/) upon user login to an OpenID Connect (OIDC) relaying party (RP) service that is [registered with LS-AAI](https://spreg-legacy.aai.elixir-czech.org/). An example of such an RP service is the [sda-auth](https://github.com/neicnordic/sda-auth), which is included in the present stack.
+To interact with SDA services, users need to provide [JSON Web Token](https://jwt.io/) (JWT) authorization. Ultimately, tokens can be fetched by [LS-AAI](https://lifescience-ri.eu/ls-login/) upon user login to an OpenID Connect (OIDC) relaying party (RP) service that is [registered with LS-AAI](https://spreg-legacy.aai.elixir-czech.org/). An example of such an RP service is the [sda-auth](https://github.com/neicnordic/sensitive-data-archive/tree/main/sda/cmd/auth), which is included in the present stack.
 
 ### sda-auth
 
@@ -152,26 +152,26 @@ To start using the tool run:
 - Encrypt and upload a file to the SDA in one go:
 
 ```shell
-./sda-cli upload -config s3cmd.conf --encrypt-with-key <sda-c4gh-public-key> <unencrypted_file_to_upload>
+./sda-cli -config s3cmd.conf upload --encrypt-with-key <sda-c4gh-public-key> <unencrypted_file_to_upload>
 ```
 
 - Encrypt and upload a whole folder recursively to a specified path, which can be different from the source, in one go:
 
 ```shell
-./sda-cli upload -config s3cmd.conf --encrypt-with-key <sda-c4gh-public-key> -r <folder_1_to_upload> -targetDir <upload_folder>
+./sda-cli -config s3cmd.conf upload --encrypt-with-key <sda-c4gh-public-key> -r <folder_1_to_upload> -targetDir <upload_folder>
 ```
 
 - List all uploaded files in the user's bucket recursively:
 
 ```shell
-./sda-cli list -config s3cmd.conf
+./sda-cli -config s3cmd.conf list
 ```
 
 For detailed documentation on the tool's capabilities and usage please refer [here](https://github.com/NBISweden/sda-cli#usage).
 
 ### Downloading data
 
-Users can directly download data from the SDA via `sda-download`, for more details see the service's [api reference](https://github.com/neicnordic/sda-download/blob/main/docs/API.md). In short, given a [valid JW token](#sda-auth), `$token`,  a user can download the file with file ID, `$fileID` by issuing the following command:
+Users can directly download data from the SDA via `sda-download`, for more details see the service's [api reference](https://github.com/neicnordic/sensitive-data-archive/blob/main/sda-download/api/api.md). In short, given a [valid JW token](#sda-auth), `$token`,  a user can download the file with file ID, `$fileID` by issuing the following command:
 
 ```shell
 curl --cacert <path-to-certificate-file> -H "Authorization: Bearer $token" https://<sda-download_DOMAIN_NAME>/files/$fileID -o <output-filename>
@@ -188,8 +188,6 @@ The `fileID` is a unique file identifier that can be obtained by calls to `sda-d
 ### Data access permissions
 
 In order for a user to access a file, permission to access the dataset that the file belongs to is needed. This is granted through [REMS](https://github.com/CSCfi/rems) in the form of `GA4GH` visas. For details see [starter-kit documentation on REMS](https://github.com/GenomicDataInfrastructure/starter-kit-rems) and the links therein.
-
-## How to perform common admin tasks
 
 ### The sda-admin tool
 
@@ -306,7 +304,7 @@ curl -s -H "Authorization: Bearer $token" "http://localhost:8443/metadata/datase
 
 #### Download a specific encrypted file
 
-The `sda-download` service offers multiple methods for downloading files through the API, with options for both encrypted and unencrypted results. Below, you will find an example illustrating each of these methods.
+The `sda-download` service offers a method for downloading files through the API, which will be encrypted with the public key provided in the request. Below, you will find an example illustrating each of this methods.
 
 To download the file `htsnexus_test_NA12878.bam`, first obtain the respective `fileID` using the following command. The `datasetID`, which is `DATASET0001`, can be obtained by following the instructions at [List datasets](#list-datasets)
 
