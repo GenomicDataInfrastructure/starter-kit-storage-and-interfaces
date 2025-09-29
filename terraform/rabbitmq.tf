@@ -75,6 +75,8 @@ curl --cacert /certs/ca.crt -s -u "$MQ_USER:$MQ_PASS" -X PUT https://${helm_rele
     -H "content-type:application/json" -d '{"configure":"","write":"","read":"mappings"}'
 curl --cacert /certs/ca.crt -s -u "$MQ_USER:$MQ_PASS" -X PUT https://${helm_release.sda_mq.name}-sda-mq:15671/api/permissions/sda/verify \
     -H "content-type:application/json" -d '{"configure":"","write":"sda","read":"archived"}'
+curl --cacert /certs/ca.crt -s -u "$MQ_USER:$MQ_PASS" -X PUT https://${helm_release.sda_mq.name}-sda-mq:15671/api/permissions/sda/api \
+    -H "content-type:application/json" -d '{"configure":"","write":"sda","read":""}'
 EOF
   }
 }

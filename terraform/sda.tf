@@ -28,11 +28,11 @@ resource "helm_release" "sda_pipeline" {
     yamlencode(
       {
         "credentials" : {
-          api : {
-            dbUser : "api"
-            dbPassword : random_password.api.result
-            mqUser : "api"
-            mqPassword : random_password.api.result
+          "api" : {
+            "dbUser" : "api"
+            "dbPassword" : random_password.api.result
+            "mqUser" : "api"
+            "mqPassword" : random_password.api.result
           },
           "download" : {
             "dbUser" : "download",
@@ -102,8 +102,8 @@ resource "helm_release" "sda_pipeline" {
             "vhost" : "sda",
             "prefetchCount" : "0",
           },
-          "c4gh" : {
-            "privateKeys": [
+          c4gh : {
+            privateKeys: [
             {
               "keyName" : "c4gh.sec.pem"
               "passphrase" : var.repository-c4gh-passphrase,
@@ -114,7 +114,7 @@ resource "helm_release" "sda_pipeline" {
           },
           "db" : {
             "host" : "${helm_release.sda_db.name}-sda-db",
-            "sslMode" : "verify-ca",
+            "sslMode" : "verify-full",
           },
           "doa" : {
             "enabled" : false,
@@ -122,7 +122,7 @@ resource "helm_release" "sda_pipeline" {
           "download" : {
             "enabled" : "true",
             "trusted" : {
-              "iss" : jsonencode([{ "iss" : var.oidc-provider, "jku" : "${var.oidc-provider}/jwk" }]),
+              "iss" : [{ "iss" : var.oidc-provider, "jku" : "${var.oidc-provider}/jwk" }],
             }
           },
           "inbox" : {
@@ -156,10 +156,21 @@ resource "helm_release" "sda_pipeline" {
           "log.level" : var.log-level,
           "schemaType" : "standalone",
           "tls" : {
+            "enabled": true,
             "issuer" : kubernetes_manifest.internal_issuer.manifest.metadata.name,
           },
         }
         "intercept.deploy" : "false",
+        "reencrypt": {
+          "readinessProbe": {
+            "periodSeconds": 10
+            "timeoutSeconds": 2
+            "grpc": {
+              "port": 50444
+              "service": "reencrypt.Reencrypt"
+            }
+          }
+        }
       }
     )
   ]
