@@ -66,7 +66,7 @@ For an example of how to set up the `sda-pipeline` with TLS, see [TLS-example/RE
 
 ## Authentication for users with LS-AAI (mock or alive)
 
-To interact with SDA services, users need to provide [JSON Web Token](https://jwt.io/) (JWT) authorization. Ultimately, tokens can be fetched by [LS-AAI](https://lifescience-ri.eu/ls-login/) upon user login to an OpenID Connect (OIDC) relaying party (RP) service that is [registered with LS-AAI](https://spreg-legacy.aai.elixir-czech.org/). An example of such an RP service is the [sda-auth](https://github.com/neicnordic/sensitive-data-archive/tree/main/sda/cmd/auth), which is included in the present stack.
+To interact with SDA services, users need to provide [JSON Web Token](https://jwt.io/) (JWT) authorization. Ultimately, tokens can be fetched by [LS-AAI](https://lifescience-ri.eu/ls-login/) upon user login to an OpenID Connect (OIDC) relaying party (RP) service that is [registered with LS-AAI](https://services.aai.lifescience-ri.eu/spreg/). An example of such an RP service is the [sda-auth](https://github.com/neicnordic/sensitive-data-archive/tree/main/sda/cmd/auth), which is included in the present stack.
 
 ### sda-auth
 
