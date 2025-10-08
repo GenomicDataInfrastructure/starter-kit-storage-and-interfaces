@@ -3,7 +3,7 @@ db-backup-c4gh-public-key-path = ""
 kubeconfig-path                = ""
 
 ### container tags
-sda-services-backup-version = "v0.1.1111"
+sda-services-backup-version = "v0.1.111"
 
 ### helm chart versions
 sda-db-version  = "2.0.20"
