@@ -45,6 +45,8 @@ resource "kubernetes_secret_v1" "db_post_start_script" {
       psql -h postgres-sda-db -U postgres -d sda -c "ALTER ROLE ingest LOGIN PASSWORD '${random_password.ingest.result}';"
       psql -h postgres-sda-db -U postgres -d sda -c "ALTER ROLE mapper LOGIN PASSWORD '${random_password.mapper.result}';"
       psql -h postgres-sda-db -U postgres -d sda -c "ALTER ROLE verify LOGIN PASSWORD '${random_password.verify.result}';"
+      psql -h postgres-sda-db -U postgres -d sda -c "ALTER ROLE api LOGIN PASSWORD '${random_password.api.result}';"
+      psql -h postgres-sda-db -U postgres -d sda -c "ALTER ROLE auth LOGIN PASSWORD '${random_password.auth.result}';"
     EOF
   }
 }

@@ -1,7 +1,8 @@
 services:
   auth:
     container_name: auth
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.23-auth
+    command: sda-auth
+    image: ghcr.io/neicnordic/sensitive-data-archive:v3.0.14
     networks:
       - public
     ports:
@@ -31,7 +32,7 @@ services:
       interval: 5s
       timeout: 20s
       retries: 20
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.23-rabbitmq
+    image: ghcr.io/neicnordic/sensitive-data-archive:v3.0.14-rabbitmq
     networks:
       - secure
     ports:
@@ -63,7 +64,7 @@ services:
       interval: 5s
       timeout: 20s
       retries: 20
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.23-postgres
+    image: ghcr.io/neicnordic/sensitive-data-archive:v3.0.14-postgres
     networks:
       - secure
     restart: always
@@ -80,7 +81,7 @@ services:
     environment:
       - DB_PASSWORD=${download_DB_PASSWORD}
       - DB_USER=download
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.23-download
+    image: ghcr.io/neicnordic/sensitive-data-archive:v3.0.14-download
     networks:
       - public
       - secure
@@ -109,7 +110,7 @@ services:
       - BROKER_USER=finalize
       - DB_PASSWORD=${finalize_DB_PASSWORD}
       - DB_USER=finalize
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.23
+    image: ghcr.io/neicnordic/sensitive-data-archive:v3.0.14
     networks:
       - secure
     restart: always
@@ -132,7 +133,7 @@ services:
       - BROKER_USER=ingest
       - DB_PASSWORD=${ingest_DB_PASSWORD}
       - DB_USER=ingest
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.23
+    image: ghcr.io/neicnordic/sensitive-data-archive:v3.0.14
     networks:
       - secure
     restart: always
@@ -155,7 +156,7 @@ services:
       - BROKER_USER=mapper
       - DB_PASSWORD=${mapper_DB_PASSWORD}
       - DB_USER=mapper
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.23
+    image: ghcr.io/neicnordic/sensitive-data-archive:v3.0.14
     networks:
       - secure
     restart: always
@@ -178,7 +179,7 @@ services:
       - BROKER_USER=verify
       - DB_PASSWORD=${verify_DB_PASSWORD}
       - DB_USER=verify
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.23
+    image: ghcr.io/neicnordic/sensitive-data-archive:v3.0.14
     networks:
       - secure
     restart: always
@@ -201,7 +202,7 @@ services:
       - BROKER_USER=inbox
       - DB_PASSWORD=${s3inbox_DB_PASSWORD}
       - DB_USER=inbox
-    image: ghcr.io/neicnordic/sensitive-data-archive:v0.2.23
+    image: ghcr.io/neicnordic/sensitive-data-archive:v3.0.14
     networks:
       - public
       - secure

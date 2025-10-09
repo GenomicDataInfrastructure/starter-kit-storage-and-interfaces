@@ -77,3 +77,6 @@ variable "s3BackupSecretKey" {
 variable "s3BackupURL" {
   type = string
 }
+variable "api-admins" {
+  type = map(list(map(string)))
+}

@@ -28,8 +28,9 @@ broker:
   ssl: "false"
 
 c4gh:
-  passphrase: "c4ghpass"
-  filepath: "/shared/c4gh.sec.pem"
+  privateKeys:
+  - filepath: "/shared/c4gh.sec.pem"
+    passphrase: "c4ghpass"
 
 db:
   host: "postgres"

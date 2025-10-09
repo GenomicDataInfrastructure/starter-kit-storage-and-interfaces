@@ -22,7 +22,9 @@ inbox:
     secretkey:
 
 c4gh:
-    passphrase:
+  privateKeys:
+    - filepath:
+      passphrase: 
 
 elixir:
     id:
